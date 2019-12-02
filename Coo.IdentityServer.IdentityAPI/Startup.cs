@@ -24,6 +24,12 @@ namespace Coo.IdentityServer.IdentityAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentityServer()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddDeveloperSigningCredential();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -34,6 +40,8 @@ namespace Coo.IdentityServer.IdentityAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseIdentityServer();
 
             app.UseMvc();
         }

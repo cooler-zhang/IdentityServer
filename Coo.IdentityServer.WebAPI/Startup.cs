@@ -25,6 +25,16 @@ namespace Coo.IdentityServer.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthorization();
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:61868";
+                    options.ApiName = "api1";
+                    options.ApiSecret = "WebAPISecret";
+                    options.RequireHttpsMetadata = false;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +46,7 @@ namespace Coo.IdentityServer.WebAPI
             }
 
             app.UseMvc();
+            app.UseAuthentication();
         }
     }
 }
