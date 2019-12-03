@@ -22,12 +22,12 @@ namespace Coo.IdentityServer.IdentityAPI
             {
                 new Client
                 {
-                    ClientId = "WebAPIClient",
+                    ClientId = "client",
                     AllowedGrantTypes = {
                         GrantType.ClientCredentials
                     },
                     ClientSecrets = {
-                        new Secret("WebAPISecret".Sha256())
+                        new Secret("secret".Sha256())
                     },
                     AllowedScopes = {
                         "api1"
@@ -40,8 +40,7 @@ namespace Coo.IdentityServer.IdentityAPI
         {
             return new List<IdentityResource>
             {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.OpenId()
             };
         }
     }

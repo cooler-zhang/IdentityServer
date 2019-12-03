@@ -26,14 +26,19 @@ namespace Coo.IdentityServer.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //services.AddMvcCore()
+            //    .AddAuthorization()
+            //    .AddJsonFormatters();
+
             services.AddAuthorization();
+
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication("Bearer", options =>
+                .AddJwtBearer("Bearer", options =>
                 {
                     options.Authority = "http://localhost:61868";
-                    options.ApiName = "api1";
-                    options.ApiSecret = "WebAPISecret";
                     options.RequireHttpsMetadata = false;
+
+                    options.Audience = "api1";
                 });
         }
 
@@ -44,9 +49,9 @@ namespace Coo.IdentityServer.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAuthentication();
 
             app.UseMvc();
-            app.UseAuthentication();
         }
     }
 }

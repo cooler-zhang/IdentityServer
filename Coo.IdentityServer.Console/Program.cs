@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace Coo.IdentityServer.Console
 {
+    using System;
+
     class Program
     {
         static void Main(string[] args)
         {
             var tokenResponse = RequestTokenAsync().Result;
-            CallServiceAsync(tokenResponse.AccessToken).Wait();
+            var result = CallServiceAsync(tokenResponse.AccessToken).Result;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(result);
+            Console.ReadLine();
         }
 
-        public static async Task CallServiceAsync(string token)
+        public static async Task<string> CallServiceAsync(string token)
         {
             var baseAddress = Constants.SampleApi;
 
@@ -24,9 +29,8 @@ namespace Coo.IdentityServer.Console
             };
 
             client.SetBearerToken(token);
-            var response = await client.GetStringAsync("api/values");
+            return await client.GetStringAsync("api/values");
         }
-
 
         public static async Task<TokenResponse> RequestTokenAsync()
         {
@@ -39,8 +43,9 @@ namespace Coo.IdentityServer.Console
             {
                 Address = disco.TokenEndpoint,
 
-                ClientId = "WebAPIClient",
-                ClientSecret = "WebAPISecret"
+                ClientId = "client",
+                ClientSecret = "secret",
+                Scope = "api1"
             });
 
             if (response.IsError) throw new Exception(response.Error);
@@ -50,10 +55,10 @@ namespace Coo.IdentityServer.Console
 
     public class Constants
     {
-        public const string Authority = "http://localhost:61868";
+        public const string Authority = "http://localhost:61868/";
         //public const string Authority = "https://local.identityserver.io";
 
-        public const string SampleApi = "http://localhost:61874";
+        public const string SampleApi = "http://localhost:61874/";
         //public const string SampleApi = "https://api.identityserver.io";
     }
 }
