@@ -1,7 +1,9 @@
 ﻿using IdentityServer4.Models;
+using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Coo.IdentityServer.IdentityAPI
@@ -32,6 +34,19 @@ namespace Coo.IdentityServer.IdentityAPI
                     AllowedScopes = {
                         "api1"
                     }
+                },
+                new Client
+                {
+                    ClientId = "client.ro",
+                    AllowedGrantTypes = {
+                        GrantType.ResourceOwnerPassword
+                    },
+                    ClientSecrets = {
+                        new Secret("secret.ro".Sha256())
+                    },
+                    AllowedScopes = {
+                        "api1"
+                    }
                 }
             };
         }
@@ -40,7 +55,29 @@ namespace Coo.IdentityServer.IdentityAPI
         {
             return new List<IdentityResource>
             {
-                new IdentityResources.OpenId()
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResources.Email()
+            };
+        }
+
+        public static List<TestUser> GetTestUsers()
+        {
+            return new List<TestUser> {
+                new TestUser(){
+                    SubjectId = "1",
+                    Username = "Cooler",
+                    Password = "123456",
+                    Claims = new List<Claim>()
+                    {
+                        new Claim("Email","cooler@test.com")
+                    }
+                },
+                new TestUser(){
+                    SubjectId = "2",
+                    Username = "Test",
+                    Password = "123456"
+                }
             };
         }
     }

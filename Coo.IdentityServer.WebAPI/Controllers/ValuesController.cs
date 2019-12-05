@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Coo.IdentityServer.WebAPI.Controllers
 {
@@ -14,9 +16,16 @@ namespace Coo.IdentityServer.WebAPI.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            //var claimString = new StringBuilder();
+            //claimString.AppendLine($"IdentityName: {User.Identity.Name}");
+            //foreach (var claim in User.Claims)
+            //{
+            //    claimString.AppendLine($"{claim.Type}:{claim.Value}");
+            //}
+            //return claimString.ToString();
+            return User.Identity.ToJson(false, true);
         }
 
         // GET api/values/5

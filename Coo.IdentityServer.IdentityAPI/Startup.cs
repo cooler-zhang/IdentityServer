@@ -30,7 +30,8 @@ namespace Coo.IdentityServer.IdentityAPI
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddDeveloperSigningCredential();
+                .AddDeveloperSigningCredential()
+                .AddTestUsers(Config.GetTestUsers());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

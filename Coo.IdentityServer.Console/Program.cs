@@ -14,7 +14,6 @@ namespace Coo.IdentityServer.Console
         {
             var tokenResponse = RequestTokenAsync().Result;
             var result = CallServiceAsync(tokenResponse.AccessToken).Result;
-            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(result);
             Console.ReadLine();
         }
@@ -39,13 +38,25 @@ namespace Coo.IdentityServer.Console
             var disco = await client.GetDiscoveryDocumentAsync(Constants.Authority);
             if (disco.IsError) throw new Exception(disco.Error);
 
-            var response = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            //var response = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            //{
+            //    Address = disco.TokenEndpoint,
+
+            //    ClientId = "client",
+            //    ClientSecret = "secret",
+            //    Scope = "api1"
+            //});
+
+            var response = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = disco.TokenEndpoint,
 
-                ClientId = "client",
-                ClientSecret = "secret",
-                Scope = "api1"
+                ClientId = "client.ro",
+                ClientSecret = "secret.ro",
+                Scope = "api1",
+
+                UserName = "Cooler",
+                Password = "123456"
             });
 
             if (response.IsError) throw new Exception(response.Error);
