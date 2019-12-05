@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IdentityServer4.Test;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Coo.IdentityServer.IdentityAPI
 {
@@ -31,6 +26,7 @@ namespace Coo.IdentityServer.IdentityAPI
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddDeveloperSigningCredential()
+                //.AddAspNetIdentity<TestUser>();
                 .AddTestUsers(Config.GetTestUsers());
         }
 
